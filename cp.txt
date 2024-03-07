@@ -14,6 +14,8 @@ SRCS_FILES =	main	\
 				do_unlink	\
 				do_pipe		\
 				do_dup2	\
+				check_inout	\
+				open_inout	\
 
 SRCS_FILES_BONUS =  \
 
