@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_access.c                                     :+:      :+:    :+:   */
+/*   open_inout.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:46:41 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/07 09:27:27 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/07 11:32:56 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/07 11:47:10 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-void	check_access(const char *filename)
+int	*open_inout(char *const argv[])
 {
-	if (access(filename, R_OK) == 0)
-		ft_printf("You have access to \"%s\".", filename);
-	else
+	static int	inout[2];
+
+	inout[IN] = open(argv[1], O_RDONLY);
+	if (inout[IN] == -1)
 	{
-		perror("Can't open this file");
-		exit (EXIT_FAILURE);
+		perror("Erreur lors d'open");
+		return (NULL);
 	}
+	inout[OUT] = open(argv[4], O_WRONLY);
+	if (inout[OUT] == -1)
+	{
+		perror("Erreur lors d'open");
+		close(inout[IN]);
+		return (NULL);
+	}
+	return (inout);
 }

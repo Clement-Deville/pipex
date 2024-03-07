@@ -10,6 +10,12 @@ DEBUG = -g
 
 SRCS_FILES =	main	\
 				check_access	\
+				exec_cmd	\
+				do_unlink	\
+				do_pipe		\
+				do_dup2	\
+				check_inout	\
+				open_inout	\
 
 SRCS_FILES_BONUS =  \
 

@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_access.c                                     :+:      :+:    :+:   */
+/*   unlink_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:46:41 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/07 09:27:27 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/07 10:21:52 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/07 10:28:22 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-void	check_access(const char *filename)
+int	do_unlink(const char *pathname)
 {
-	if (access(filename, R_OK) == 0)
-		ft_printf("You have access to \"%s\".", filename);
-	else
+	if (unlink(pathname) == -1)
 	{
-		perror("Can't open this file");
-		exit (EXIT_FAILURE);
+		perror("Erreur lors de la suppression du fichier");
+		return (1);
 	}
+	return (0);
 }

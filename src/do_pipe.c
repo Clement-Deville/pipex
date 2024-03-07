@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_access.c                                     :+:      :+:    :+:   */
+/*   do_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:46:41 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/07 09:27:27 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/07 10:48:36 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/07 10:52:03 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-void	check_access(const char *filename)
+int	do_pipe(int pipfd[2])
 {
-	if (access(filename, R_OK) == 0)
-		ft_printf("You have access to \"%s\".", filename);
-	else
+	if (pipe(pipfd) == -1)
 	{
-		perror("Can't open this file");
-		exit (EXIT_FAILURE);
+		perror("Erreur lors de la creatin du pipe");
+		return (1);
 	}
+	return (0);
 }
