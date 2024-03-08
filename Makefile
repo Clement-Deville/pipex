@@ -55,9 +55,11 @@ bonus: $(NAME_B)
 
 clean:
 	rm -rf $(OBJS_DIR)
+	make clean -C $(LIBFT_DIR)
 
 fclean: clean
 	rm -rf $(BIN_DIR)
+	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 

@@ -6,15 +6,15 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:09:42 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/07 16:59:21 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/08 18:34:20 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# define IN 0
-# define OUT 1
+# define READ 0
+# define WRITE 1
 
 # define STDIN 0
 # define STDOUT 1
@@ -24,6 +24,7 @@
 # include <unistd.h>
 # include <libft.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 
 int		check_access(const char *filename);
 int		exec_cmd(const char *path, char *const args[]);
