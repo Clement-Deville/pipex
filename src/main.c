@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:26:33 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/11 15:14:40 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/12 15:03:28 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,37 @@
 // 	return (0);
 // }
 
+char	***parse_commands(int argc, char **argv)
+{
+	char	***cmds;
+	char	**cmd_one;
+	char	**cmd_two;
+
+	(void)argc;
+	cmd_one = ft_split(argv[1], ' ');
+	if (cmd_one == NULL)
+		return (NULL);
+	cmd_two = ft_split(argv[2], ' ');
+	if (cmd_two == NULL)
+	{
+		free(cmd_one);
+		return (NULL);
+	}
+	cmds = (char ***)malloc(sizeof(char **) * 2);
+	if (cmds == NULL)
+	{
+		ft_free("%s %s", cmds[0], cmds[1]);
+		return (NULL);
+	}
+	cmds[0] = cmd_one;
+	cmds[1] = cmd_two;
+	return (cmds);
+}
+
 int	main(int argc, char *argv[])
 {
 	int		fd[2];
-	char	**cmd_one;
-	char	**cmd_two;
+	char	***cmds;
 	int		pid1;
 	int		pid2;
 	int		status1;
@@ -118,15 +144,9 @@ int	main(int argc, char *argv[])
 	pid2 = -1;
 	if (argc != 3)
 		return (1);
-	cmd_one = ft_split(argv[1], ' ');
-	if (cmd_one == NULL)
+	cmds = parse_commands(argc, argv);
+	if (cmds == NULL)
 		return (2);
-	cmd_two = ft_split(argv[2], ' ');
-	if (cmd_two == NULL)
-	{
-		free(cmd_one);
-		return (3);
-	}
 	if (pipe(fd) == -1)
 	{
 		perror("pipex: error when calling pipe");
@@ -138,7 +158,7 @@ int	main(int argc, char *argv[])
 		close(fd[READ]);
 		dup2(fd[WRITE], STDOUT_FILENO);
 		close(fd[WRITE]);
-		if (execv(cmd_one[0], cmd_one) == -1)
+		if (execv(cmds[0][0], cmds[0]) == -1)
 		{
 			perror("pipex: error when executing command one");
 			return (5);
@@ -154,7 +174,7 @@ int	main(int argc, char *argv[])
 		close(fd[WRITE]);
 		dup2(fd[READ], STDIN_FILENO);
 		close(fd[READ]);
-		if (execv(cmd_two[0], cmd_two) == -1)
+		if (execv(cmds[1][0], cmds[1]) == -1)
 		{
 			perror("pipex: error when executing command two");
 			return (6);
@@ -170,7 +190,12 @@ int	main(int argc, char *argv[])
 	}
 	if (WIFEXITED(status1) == TRUE)
 	{
-		ft_printf("Child one exited anormaly with exit code %d\n", WEXITSTATUS(status1));
+		if (WEXITSTATUS(status1))
+			ft_printf("Child one exited anormaly with exit code %d\n", WEXITSTATUS(status1));
+	}
+	else
+	{
+		ft_printf("Child one exited anormaly");
 	}
 	if (waitpid(pid2, &status2, 0) == -1)
 	{
@@ -179,9 +204,14 @@ int	main(int argc, char *argv[])
 	}
 	if (WIFEXITED(status2) == TRUE)
 	{
-		ft_printf("Child two exited anormaly with exit code %d\n", WEXITSTATUS(status2));
+		if (WEXITSTATUS(status2))
+			ft_printf("Child two exited anormaly with exit code %d\n", WEXITSTATUS(status2));
 	}
-	if (ft_free("%s %s", cmd_one, cmd_two) != 0)
+	else
+	{
+		ft_printf("Child two exited anormaly");
+	}
+	if (ft_free("%s %s %p", cmds[0], cmds[1], cmds) != 0)
 	{
 		perror("pipex: error lors du free des arguments");
 		return (14);
