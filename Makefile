@@ -16,7 +16,7 @@ SRCS_FILES =	main	\
 				do_dup2	\
 				utils	\
 
-SRCS_FILES_BONUS =  \
+SRCS_FILES_BONUS =	main_bonus	\
 
 INCLUDES_FILES = pipex
 
@@ -26,6 +26,7 @@ OBJS_DIR =		./obj/
 BIN_DIR = 		./bin/
 LIB_DIR =		./lib/
 TEST_DIR = 		./test/
+MANDATORY_DIR = mandatory/
 
 LIBFT_DIR = $(LIB_DIR)/libft
 
@@ -37,13 +38,13 @@ OBJS_B = 	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES_BONUS)))
 $(NAME): $(OBJS)
 	make -C $(LIBFT_DIR)
 	mkdir -p $(BIN_DIR)
-	$(CC) $(FLAGS) $(OBJS) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)/$(NAME)
+	$(CC) $(FLAGS) $(OBJS) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME)
 	@echo "pipex Done !"
 
 $(NAME_B): $(OBJS_B)
 	make -C $(LIBFT_DIR)
 	mkdir -p $(BIN_DIR)
-	$(CC) $(FLAGS) $(OBJS_B) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)/$(NAME_B)
+	$(CC) $(FLAGS) $(OBJS_B) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME_B)
 	@echo "pipex_bonus Done !"
 
 $(OBJS_DIR)%.o : $(SOURCE_DIR)%.c

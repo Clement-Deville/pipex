@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:26:33 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/12 15:03:28 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:05:17 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,20 +183,6 @@ int	main(int argc, char *argv[])
 	}
 	close(fd[READ]);
 	close(fd[WRITE]);
-	if (waitpid(pid1, &status1, 0) == -1)
-	{
-		perror("pipex: error when calling wait on child 1");
-		return (15);
-	}
-	if (WIFEXITED(status1) == TRUE)
-	{
-		if (WEXITSTATUS(status1))
-			ft_printf("Child one exited anormaly with exit code %d\n", WEXITSTATUS(status1));
-	}
-	else
-	{
-		ft_printf("Child one exited anormaly");
-	}
 	if (waitpid(pid2, &status2, 0) == -1)
 	{
 		perror("pipex: error when calling wait on child 2");
@@ -205,7 +191,7 @@ int	main(int argc, char *argv[])
 	if (WIFEXITED(status2) == TRUE)
 	{
 		if (WEXITSTATUS(status2))
-			ft_printf("Child two exited anormaly with exit code %d\n", WEXITSTATUS(status2));
+			ft_printf("Child two exited normaly with exit code %d\n", WEXITSTATUS(status2));
 	}
 	else
 	{
@@ -215,6 +201,21 @@ int	main(int argc, char *argv[])
 	{
 		perror("pipex: error lors du free des arguments");
 		return (14);
+	}
+	if (waitpid(pid1, &status1, 0) == -1)
+	{
+		perror("pipex: error when calling wait on child 1");
+		return (15);
+	}
+	if (WIFEXITED(status1) == TRUE)
+	{
+		if (WEXITSTATUS(status1))
+			ft_printf("Child one exited normaly with exit code %d\n", WEXITSTATUS(status1));
+	}
+	else
+	{
+		ft_printf("SIGNAL : %d\n", WTERMSIG(status1));
+		ft_printf("Child one exited anormaly");
 	}
 	return (WEXITSTATUS(status2));
 }
