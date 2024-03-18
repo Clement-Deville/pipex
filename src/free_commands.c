@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_access.c                                     :+:      :+:    :+:   */
+/*   free_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:46:41 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/18 13:26:04 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/18 10:07:55 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/18 10:17:25 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-int	check_access(const char *filename)
+void	free_commands(char ***cmds)
 {
-	if (access(filename, R_OK) == 0)
-		return (TRUE);
-	else
+	int	i;
+
+	i = 0;
+	while (cmds[i])
 	{
-		perror(filename);
-		return (FALSE);
+		ft_free("%s", cmds[i]);
+		i++;
 	}
+	free(cmds);
 }

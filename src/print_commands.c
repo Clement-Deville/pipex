@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_access.c                                     :+:      :+:    :+:   */
+/*   print_commands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:46:41 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/18 13:26:04 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/18 10:02:27 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/18 10:17:06 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-int	check_access(const char *filename)
+void	print_commands(char ***cmds)
 {
-	if (access(filename, R_OK) == 0)
-		return (TRUE);
-	else
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmds[i])
 	{
-		perror(filename);
-		return (FALSE);
+		j = 0;
+		while (cmds[i][j])
+		{
+			ft_printf("%s\n", cmds[i][j]);
+			j++;
+		}
+		i++;
 	}
 }

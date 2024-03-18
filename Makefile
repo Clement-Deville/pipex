@@ -17,6 +17,15 @@ SRCS_FILES =	main	\
 				utils	\
 
 SRCS_FILES_BONUS =	main_bonus	\
+					print_commands	\
+					parse_commands	\
+					free_commands	\
+					check_access	\
+					exec_cmd	\
+					do_unlink	\
+					do_pipe		\
+					do_dup2	\
+					utils	\
 
 INCLUDES_FILES = pipex
 

@@ -1,24 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_access.c                                     :+:      :+:    :+:   */
+/*   parse_commands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:46:41 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/18 13:26:04 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/18 10:09:06 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/18 10:09:26 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-int	check_access(const char *filename)
+char	***parse_commands(int argc, char **argv)
 {
-	if (access(filename, R_OK) == 0)
-		return (TRUE);
-	else
+	char	***cmds;
+	int		i;
+
+	i = 0;
+	cmds = (char ***)malloc(sizeof(char **) * (argc + 1));
+	if (cmds == NULL)
+		return (NULL);
+	cmds[argc] = NULL;
+	while (argv[i])
 	{
-		perror(filename);
-		return (FALSE);
+		cmds[i] = ft_split(argv[i], ' ');
+		if (cmds[i] == NULL)
+		{
+			while (i)
+			{
+				i--;
+				ft_free("%s", cmds[i]);
+			}
+			return (NULL);
+		}
+		i++;
 	}
+	return (cmds);
 }
