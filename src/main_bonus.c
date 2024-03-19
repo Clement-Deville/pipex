@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 18:03:24 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/18 19:14:50 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:06:19 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ int	wait_for_all(int *pid_tab, int size)
 			exit_value = WEXITSTATUS(status);
 			ft_putnbr_fd(exit_value, STDERR_FILENO);
 		}
-		if (WIFSIGNALED(status))
+		if (pid_tab[i] != NO_FORK && WIFSIGNALED(status))
 		{
+			exit_value = 128 + WTERMSIG(status);
 			ft_printf("Process %d terminated by signal %d\n", i, WTERMSIG(status));
 		}
 		i++;
@@ -50,6 +51,7 @@ int	wait_for_all(int *pid_tab, int size)
 	}
 	if (pid_tab[i] != NO_FORK && WIFSIGNALED(status))
 	{
+		exit_value = 128 + WTERMSIG(status);
 		ft_printf("Process %d terminated by signal %d\n", i, WTERMSIG(status));
 	}
 	return (exit_value);
@@ -57,9 +59,9 @@ int	wait_for_all(int *pid_tab, int size)
 
 void	connect_read(int *pipefd)
 {
-	close(pipefd[WRITE]);
-	dup2((pipefd - 1)[READ], STDIN_FILENO);
-	close((pipefd - 1)[READ]);
+	close((pipefd - 2)[WRITE]);
+	dup2((pipefd - 2)[READ], STDIN_FILENO);
+	close((pipefd - 2)[READ]);
 }
 
 void	connect_write(int *pipefd)
@@ -78,8 +80,8 @@ void	close_useless_fd(int *pipefd, int size)
 		return ;
 	while (i < size - 1)
 	{
-		close((pipefd + i)[READ]);
-		close((pipefd + i)[WRITE]);
+		close((pipefd + (2 * i))[READ]);
+		close((pipefd + (2 * i))[WRITE]);
 		i++;
 	}
 	return ;
@@ -92,8 +94,8 @@ int	close_parent(int *pipefd, int size)
 	i = 0;
 	while (i < size)
 	{
-		close(pipefd[READ]);
-		close(pipefd[WRITE]);
+		close((pipefd + (2 * i))[READ]);
+		close((pipefd + (2 * i))[WRITE]);
 		i++;
 	}
 	return (0);
@@ -117,6 +119,7 @@ int	start_piping(char ***cmds, char *envp[])
 	int	*pipefd;
 	int	*pid_tab;
 	int	status;
+	int	access_status;
 
 	i = 0;
 	pid_tab = (int *)malloc(sizeof(int) * nbr_of_cmds(cmds));
@@ -134,23 +137,22 @@ int	start_piping(char ***cmds, char *envp[])
 	}
 	while (cmds[i] && cmds[i + 1])
 	{
-		//check access command
-		//create pipe
-		//fork and exec
-		//set stdin as pipe[READ] in parent
 		if (pipe(&pipefd[2 * i]) == -1)
 		{
 			perror("Pipe error");
 			free(pid_tab);
+			free(pipefd);
 			return (-2);
 		}
-		if (check_access(cmds[i][0]) == TRUE)
+		access_status = check_access(cmds[i][0]);
+		if (access == 0)
 		{
 			pid_tab[i] = fork();
 			if (pid_tab[i] < 0)
 			{
 				perror("Fork error");
 				free(pid_tab);
+				free(pipefd);
 				return (-3);
 			}
 			if (are_in_child_one(pid_tab[i]))
@@ -159,20 +161,22 @@ int	start_piping(char ***cmds, char *envp[])
 					connect_read(&pipefd[2 * i]);
 				connect_write(&pipefd[2 * i]);
 				close_useless_fd(pipefd, i);
-				return (exec_cmd(cmds[i][0], cmds[i], envp));
+				exit (exec_cmd(cmds[i][0], cmds[i], envp));
 			}
 		}
 		else
 			pid_tab[i] = NO_FORK;
 		i++;
 	}
-	if (check_access(cmds[i][0]) == TRUE)
+	access_status = check_access(cmds[i][0]);
+	if (access == 0)
 	{
 		pid_tab[i] = fork();
 		if (pid_tab[i] < 0)
 		{
 			perror("Fork error");
 			free(pid_tab);
+			free(pipefd);
 			return (-3);
 		}
 		if (are_in_child_one(pid_tab[i]))
@@ -180,7 +184,7 @@ int	start_piping(char ***cmds, char *envp[])
 			if (i > 0)
 				connect_read(&pipefd[2 * i]);
 			close_useless_fd(pipefd, i);
-			return (exec_cmd(cmds[i][0], cmds[i], envp));
+			exit (exec_cmd(cmds[i][0], cmds[i], envp));
 		}
 	}
 	else
@@ -191,9 +195,11 @@ int	start_piping(char ***cmds, char *envp[])
 	{
 		perror("Wait error");
 		free(pid_tab);
+		free(pipefd);
 		return (-4);
 	}
 	free(pid_tab);
+	free(pipefd);
 	return (status);
 	//wait for all processes to be done
 }
