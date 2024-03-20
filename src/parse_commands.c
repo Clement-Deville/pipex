@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:09:06 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/18 10:09:26 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:50:19 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	***parse_commands(int argc, char **argv)
 	if (cmds == NULL)
 		return (NULL);
 	cmds[argc] = NULL;
-	while (argv[i])
+	while (i < argc)
 	{
 		cmds[i] = ft_split(argv[i], ' ');
 		if (cmds[i] == NULL)

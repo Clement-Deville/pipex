@@ -15,6 +15,7 @@ SRCS_FILES =	main	\
 				do_pipe		\
 				do_dup2	\
 				utils	\
+				redirection	\
 
 SRCS_FILES_BONUS =	main_bonus	\
 					print_commands	\
@@ -26,6 +27,7 @@ SRCS_FILES_BONUS =	main_bonus	\
 					do_pipe		\
 					do_dup2	\
 					utils	\
+					redirection	\
 
 INCLUDES_FILES = pipex
 

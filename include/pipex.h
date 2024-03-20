@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:09:42 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/19 12:00:54 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:29:01 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ t_bool	are_in_child_two(int pid1, int pid2);
 
 void	free_commands(char ***cmds);
 char	***parse_commands(int argc, char **argv);
+
+int		set_input(char *filename);
+int		set_output(char *filename);
 
 // UTILS
 
