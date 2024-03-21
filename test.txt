@@ -1,18 +1,1 @@
-yo$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
-n$$
+/bin/mkdir: created directory 'hello'

@@ -9,25 +9,31 @@ FLAGS = -Wall -Wextra -Werror
 DEBUG = -g
 
 SRCS_FILES =	main	\
-				check_access	\
+				check_command_access	\
 				exec_cmd	\
 				do_unlink	\
 				do_pipe		\
 				do_dup2	\
 				utils	\
 				redirection	\
+				start_piping	\
+				wait_for_all	\
+				fd_utils	\
 
 SRCS_FILES_BONUS =	main_bonus	\
 					print_commands	\
 					parse_commands	\
 					free_commands	\
-					check_access	\
+					check_command_access	\
 					exec_cmd	\
 					do_unlink	\
 					do_pipe		\
 					do_dup2	\
 					utils	\
 					redirection	\
+					start_piping	\
+					wait_for_all	\
+					fd_utils	\
 
 INCLUDES_FILES = pipex
 

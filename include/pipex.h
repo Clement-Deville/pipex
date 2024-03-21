@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:09:42 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/20 13:29:01 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/21 16:38:31 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,11 @@
 # include <sys/wait.h>
 # include <errno.h>
 
-int		check_access(const char *filename);
+int		check_command_access(const char *path);
 int		exec_cmd(const char *path, char *const args[], char *const envp[]);
 int		do_unlink(const char *pathname);
 int		do_pipe(int pipfd[2]);
 int		do_dup2(int oldfd, int newfd);
-
-t_bool	are_in_child_one(int pid1);
-t_bool	are_in_child_two(int pid1, int pid2);
 
 void	free_commands(char ***cmds);
 char	***parse_commands(int argc, char **argv);
@@ -50,5 +47,23 @@ int		set_output(char *filename);
 // UTILS
 
 void	print_commands(char ***cmds);
+int		nbr_of_cmds(char ***cmds);
+t_bool	are_in_child_one(int pid1);
+t_bool	are_in_child_two(int pid1, int pid2);
+
+//FD UTILS
+
+int		close_parent(int *pipefd, int size);
+void	close_useless_fd(int *pipefd, int size);
+void	connect_write(int *pipefd);
+void	connect_read(int *pipefd);
+
+// WAIT FOR ALL
+
+int		wait_for_all(int *pid_tab, int size, int access_status);
+
+// START PIPING
+
+int		start_piping(char ***cmds, char *envp[]);
 
 #endif
