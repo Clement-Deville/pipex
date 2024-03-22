@@ -19,6 +19,8 @@ SRCS_FILES =	main	\
 				start_piping	\
 				wait_for_all	\
 				fd_utils	\
+				get_next_line	\
+				get_next_line_utils	\
 
 SRCS_FILES_BONUS =	main_bonus	\
 					print_commands	\
@@ -34,6 +36,8 @@ SRCS_FILES_BONUS =	main_bonus	\
 					start_piping	\
 					wait_for_all	\
 					fd_utils	\
+					get_next_line	\
+					get_next_line_utils	\
 
 INCLUDES_FILES = pipex
 

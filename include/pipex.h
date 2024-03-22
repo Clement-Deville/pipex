@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:09:42 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/21 18:31:55 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:58:56 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <get_next_line.h>
 
 typedef struct s_command
 {
@@ -49,6 +50,11 @@ void	free_commands(t_command *cmds);
 // void	free_commands(char ***cmds);
 char	***parse_commands(int argc, char **argv);
 
+// REDIRECTION
+
+
+int		set_input_here_doc(char *limiter);
+int		set_output_append(char *filename, t_command *last_command);
 int		set_input(char *filename, t_command *first_command);
 int		set_output(char *filename, t_command *first_command);
 // int		set_input(char *filename);
@@ -56,7 +62,7 @@ int		set_output(char *filename, t_command *first_command);
 
 // UTILS
 
-void	print_commands(char ***cmds);
+void	print_commands(t_command *cmds);
 int		nbr_of_cmds(t_command *cmds);
 // int		nbr_of_cmds(char ***cmds);
 t_bool	are_in_child_one(int pid1);
@@ -78,5 +84,6 @@ int		wait_for_all(t_command *cmds, int size, int access_status);
 
 int		start_piping(t_command *cmds, char *envp[]);
 // int		start_piping(char ***cmds, char *envp[]);
+
 
 #endif

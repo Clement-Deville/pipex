@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:24:06 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/21 18:37:05 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/22 10:06:03 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,20 +130,14 @@ int	start_piping(t_command *cmds, char *envp[])
 		return (-1);
 	while (cmds[i].args)
 	{
-		if (cmds[i + 1].args && pipe(&pipefd[2 * i]) == -1)
-		{
-			free(pipefd);
-			return (perror("Pipe error"), -2);
-		}
+		if (cmds[i + 1].args != NULL && pipe(&pipefd[2 * i]) == -1)
+			return (free(pipefd), perror("Pipe error"), 1);
 		access_status = check_command_access(cmds[i].args[0]);
 		if (access_status == 0 && cmds[i].pid != NO_FORK)
 		{
 			cmds[i].pid = fork();
 			if (cmds[i].pid < 0)
-			{
-				free(pipefd);
-				return (perror("Fork error"), -3);
-			}
+				return (free(pipefd), perror("Fork error"), 1);
 			if (are_in_child_one(cmds[i].pid))
 			{
 				if (i > 0)
@@ -163,7 +157,7 @@ int	start_piping(t_command *cmds, char *envp[])
 	status = wait_for_all(cmds, i, access_status);
 	free(pipefd);
 	if (status == -1)
-		return (perror("Wait error"), -4);
+		return (perror("Wait error"), 1);
 	return (status);
 }
 

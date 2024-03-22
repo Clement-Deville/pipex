@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:22:10 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/21 18:31:37 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/22 09:46:25 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	wait_for_all(t_command *cmds, int size, int access_status)
 	while (i <= size)
 	{
 		if (cmds[i].pid != NO_FORK && waitpid(cmds[i].pid, &status, 0) == -1)
-		{
-			perror("Error lors du wait");
-			return (-1);
-		}
+			return (perror("Wait error"), -1);
 		if (cmds[i].pid != NO_FORK && WIFEXITED(status))
 			exit_value = WEXITSTATUS(status);
 		if (cmds[i].pid != NO_FORK && WIFSIGNALED(status))

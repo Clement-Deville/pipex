@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 18:03:24 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/21 18:39:15 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/22 18:09:49 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,40 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_command	*cmds;
 	int			status;
+	t_bool		here_doc;
 
 	if (argc < 5)
 		return (0);
 	// cmds = parse_commands(argc - 3, &argv[2]);
-	cmds = parse(argc - 3, &argv[2]);
-	set_input(argv[1], cmds);
-	set_output(argv[argc - 1], &cmds[argc - 3]);
-	if (cmds == NULL)
-		return (1);
-	// print_commands(cmds);
+	if (ft_strncmp("here_doc", argv[1], 10) == 0)
+	{
+		here_doc = TRUE;
+		if (set_input_here_doc(argv[2]) == -1)
+			exit (1);
+		cmds = parse(argc - 4, &argv[3]);
+		print_commands(cmds);
+		write(2, "done\n", 5);
+		if (cmds == NULL)
+			return (1);
+		if (set_output_append(argv[argc - 1],
+				&cmds[nbr_of_cmds(cmds) - 1]) == -1)
+			return (free_commands(cmds), 1);
+	}
+	else
+	{
+		cmds = parse(argc - 3, &argv[2]);
+		if (cmds == NULL)
+			return (1);
+		if (set_input(argv[1], cmds) == -1
+			|| set_output(argv[argc - 1], &cmds[nbr_of_cmds(cmds) - 1]) == -1)
+			return (free_commands(cmds), 1);
+	}
+	print_commands(cmds);
 	status = start_piping(cmds, envp);
+	// int i = -1;
+	// while ((cmds + (sizeof(t_command) * ++i)) != NULL)
+	// 	write(2, "|+|\n", 4);
+
 	free_commands(cmds);
 	return (status);
 }
