@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:24:06 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/22 10:06:03 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/25 14:14:16 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	start_piping(t_command *cmds, char *envp[])
 
 	i = 0;
 	if (allocate(&pipefd, nbr_of_cmds(cmds)) != 0)
-		return (-1);
+		return (1);
 	while (cmds[i].args)
 	{
 		if (cmds[i + 1].args != NULL && pipe(&pipefd[2 * i]) == -1)

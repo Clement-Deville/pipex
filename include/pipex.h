@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:09:42 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/22 17:58:56 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/25 14:04:10 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int		exec_cmd(const char *path, char *const args[], char *const envp[]);
 int		do_unlink(const char *pathname);
 int		do_pipe(int pipfd[2]);
 int		do_dup2(int oldfd, int newfd);
+int		do_close(int fd);
 
 void	free_commands(t_command *cmds);
 // void	free_commands(char ***cmds);

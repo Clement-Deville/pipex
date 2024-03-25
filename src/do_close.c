@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_commands.c                                    :+:      :+:    :+:   */
+/*   do_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 10:07:55 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/25 10:40:19 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/25 14:02:30 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/25 14:03:57 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-void	free_commands(t_command *cmds)
+int	do_close(int fd)
 {
-	int	i;
-
-	i = 0;
-	while (cmds[i].args)
+	if (close(fd) == -1)
 	{
-		ft_free("%s", cmds[i].args);
-		i++;
+		perror("Close error");
+		return (-1);
 	}
-	free(cmds);
+	return (0);
+
 }
-
-// void	free_commands(char ***cmds)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (cmds[i])
-// 	{
-// 		ft_free("%s", cmds[i]);
-// 		i++;
-// 	}
-// 	free(cmds);
-// }

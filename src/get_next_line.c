@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 14:39:11 by cdeville          #+#    #+#             */
-/*   Updated: 2024/01/16 10:43:45 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/25 10:37:18 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_bool	isline_over(char *str)
 	return (0);
 }
 
-char	*ft_free(char **stock, char **line)
+char	*free_stock(char **stock, char **line)
 {
 	if (stock && *stock)
 	{
@@ -67,12 +67,12 @@ char	*fill_line(int fd, char *line, char **stock)
 	{
 		number_read = read(fd, stock[fd], BUFFER_SIZE);
 		if (number_read == -1)
-			return (ft_free(&stock[fd], &line));
+			return (free_stock(&stock[fd], &line));
 		stock[fd][number_read] = 0;
 		if (number_read == 0)
 		{
 			if (ft_strlen(line) == 0)
-				return (ft_free(&stock[fd], &line));
+				return (free_stock(&stock[fd], &line));
 			return (line);
 		}
 		line = ft_strjoin_edited(line, stock[fd]);
@@ -96,7 +96,7 @@ char	*get_next_line(int fd)
 	else
 		stock[fd] = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!stock[fd])
-		return (ft_free(&stock[fd], &line));
+		return (free_stock(&stock[fd], &line));
 	line = fill_line(fd, line, stock);
 	if (!line)
 		return (0);

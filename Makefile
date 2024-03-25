@@ -14,6 +14,7 @@ SRCS_FILES =	main	\
 				do_unlink	\
 				do_pipe		\
 				do_dup2	\
+				do_close	\
 				utils	\
 				redirection	\
 				start_piping	\
@@ -21,6 +22,7 @@ SRCS_FILES =	main	\
 				fd_utils	\
 				get_next_line	\
 				get_next_line_utils	\
+
 
 SRCS_FILES_BONUS =	main_bonus	\
 					print_commands	\
@@ -31,6 +33,7 @@ SRCS_FILES_BONUS =	main_bonus	\
 					do_unlink	\
 					do_pipe		\
 					do_dup2	\
+					do_close	\
 					utils	\
 					redirection	\
 					start_piping	\
@@ -38,6 +41,7 @@ SRCS_FILES_BONUS =	main_bonus	\
 					fd_utils	\
 					get_next_line	\
 					get_next_line_utils	\
+
 
 INCLUDES_FILES = pipex
 
@@ -59,18 +63,18 @@ OBJS_B = 	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES_BONUS)))
 $(NAME): $(OBJS)
 	make -C $(LIBFT_DIR)
 	mkdir -p $(BIN_DIR)
-	$(CC) $(FLAGS) $(OBJS) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME)
+	$(CC) $(FLAGS) $(OBJS) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME)
 	@echo "pipex Done !"
 
 $(NAME_B): $(OBJS_B)
 	make -C $(LIBFT_DIR)
 	mkdir -p $(BIN_DIR)
-	$(CC) $(FLAGS) $(OBJS_B) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME_B)
+	$(CC) $(FLAGS) $(OBJS_B) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME_B)
 	@echo "pipex_bonus Done !"
 
 $(OBJS_DIR)%.o : $(SOURCE_DIR)%.c
 	@mkdir -p $(OBJS_DIR)
-	$(CC) $(FLAGS) -I./lib/libft/INCLUDES -I$(INCLUDES_DIR) -c $< -o $@
+	$(CC) $(FLAGS) $(DEBUG) -I./lib/libft/INCLUDES -I$(INCLUDES_DIR) -c $< -o $@
 
 all: $(NAME)
 
