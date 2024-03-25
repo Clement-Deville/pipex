@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 13:27:54 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/25 14:43:17 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:41:13 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@
 // 		return (perror("Close error"), -1);
 // 	return (fd);
 // }
-
-
 
 int	set_input(char *filename, t_command *first_command)
 {

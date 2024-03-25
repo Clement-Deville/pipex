@@ -6,12 +6,11 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:22:10 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/25 12:35:01 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:41:38 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
-
 
 int	wait_for_all(t_command *cmds, int size, int access_status)
 {
@@ -23,8 +22,8 @@ int	wait_for_all(t_command *cmds, int size, int access_status)
 	while (i <= size)
 	{
 		if (cmds[i].pid != NO_FORK
-			&& waitpid(cmds[i].pid, &cmds[i].status, 0) == -1)
-			return (perror("Wait error"), -1);
+			&& waitpid(cmds[i].pid, &cmds[i].status, 0) == 1)
+			return (perror("Wait error"), 1);
 		if (cmds[i].pid != NO_FORK && WIFEXITED(cmds[i].status))
 			exit_value = WEXITSTATUS(cmds[i].status);
 		if (cmds[i].pid != NO_FORK && WIFSIGNALED(cmds[i].status))

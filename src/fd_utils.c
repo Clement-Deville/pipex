@@ -6,41 +6,50 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:18:33 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/21 13:12:02 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:33:41 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-
-void	connect_read(int *pipefd)
+int	connect_read(int *pipefd)
 {
-	close((pipefd - 2)[WRITE]);
-	dup2((pipefd - 2)[READ], STDIN_FILENO);
-	close((pipefd - 2)[READ]);
+	if (do_close((pipefd - 2)[WRITE]) == -1)
+		return (1);
+	if (do_dup2((pipefd - 2)[READ], STDIN_FILENO) == -1)
+		return (1);
+	if (do_close((pipefd - 2)[READ]) == -1)
+		return (1);
+	return (0);
 }
 
-void	connect_write(int *pipefd)
+int	connect_write(int *pipefd)
 {
-	close(pipefd[READ]);
-	dup2(pipefd[WRITE], STDOUT_FILENO);
-	close(pipefd[WRITE]);
+	if (do_close(pipefd[READ]) == -1)
+		return (1);
+	if (do_dup2(pipefd[WRITE], STDOUT_FILENO) == -1)
+		return (1);
+	if (do_close(pipefd[WRITE]) == -1)
+		return (1);
+	return (0);
 }
 
-void	close_useless_fd(int *pipefd, int size)
+int	close_useless_fd(int *pipefd, int size)
 {
 	int	i;
 
 	i = 0;
 	if (size == 0)
-		return ;
+		return (0);
 	while (i < size - 1)
 	{
-		close((pipefd + (2 * i))[READ]);
-		close((pipefd + (2 * i))[WRITE]);
+		if (do_close((pipefd + (2 * i))[READ]) == -1)
+			return (1);
+		if (do_close((pipefd + (2 * i))[WRITE]) == -1)
+			return (1);
 		i++;
 	}
-	return ;
+	return (0);
 }
 
 int	close_parent(int *pipefd, int size)
@@ -50,8 +59,10 @@ int	close_parent(int *pipefd, int size)
 	i = 0;
 	while (i < size)
 	{
-		close((pipefd + (2 * i))[READ]);
-		close((pipefd + (2 * i))[WRITE]);
+		if (do_close((pipefd + (2 * i))[READ]) == -1)
+			return (1);
+		if (do_close((pipefd + (2 * i))[WRITE]) == -1)
+			return (1);
 		i++;
 	}
 	return (0);

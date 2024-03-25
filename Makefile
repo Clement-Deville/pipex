@@ -11,6 +11,7 @@ DEBUG = -g
 SRCS_FILES =	main	\
 				check_command_access	\
 				exec_cmd	\
+				parse	\
 				do_unlink	\
 				do_pipe		\
 				do_dup2	\
@@ -30,6 +31,7 @@ SRCS_FILES_BONUS =	main_bonus	\
 					free_commands	\
 					check_command_access	\
 					exec_cmd	\
+					parse	\
 					do_unlink	\
 					do_pipe		\
 					do_dup2	\

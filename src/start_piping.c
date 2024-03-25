@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:24:06 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/25 14:14:16 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:43:08 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@
 // 	return (status);
 // }
 
-
 static int	allocate(int **pipefd, int nbr_of_cmds)
 {
 	*pipefd = (int *)malloc(sizeof(int) * (2 * nbr_of_cmds));
@@ -117,6 +116,25 @@ static int	allocate(int **pipefd, int nbr_of_cmds)
 // 	return (0);
 // }
 
+int	do_fork(t_command *cmds, int i, int *pipefd, char *envp[])
+{
+	cmds[i].pid = fork();
+	if (cmds[i].pid < 0)
+		return (free(pipefd), perror("Fork error"), 1);
+	if (are_in_child_one(cmds[i].pid))
+	{
+		if (i > 0)
+			if (connect_read(&pipefd[2 * i]) == 1)
+				return (1);
+		if (cmds[i + 1].args)
+			if (connect_write(&pipefd[2 * i]) == 1)
+				return (1);
+		if (close_useless_fd(pipefd, i) == 1)
+			return (1);
+		exit (exec_cmd(cmds[i].args[0], cmds[i].args, envp));
+	}
+	return (0);
+}
 
 int	start_piping(t_command *cmds, char *envp[])
 {
@@ -135,18 +153,8 @@ int	start_piping(t_command *cmds, char *envp[])
 		access_status = check_command_access(cmds[i].args[0]);
 		if (access_status == 0 && cmds[i].pid != NO_FORK)
 		{
-			cmds[i].pid = fork();
-			if (cmds[i].pid < 0)
-				return (free(pipefd), perror("Fork error"), 1);
-			if (are_in_child_one(cmds[i].pid))
-			{
-				if (i > 0)
-					connect_read(&pipefd[2 * i]);
-				if (cmds[i + 1].args)
-					connect_write(&pipefd[2 * i]);
-				close_useless_fd(pipefd, i);
-				exit (exec_cmd(cmds[i].args[0], cmds[i].args, envp));
-			}
+			if (do_fork(cmds, i, pipefd, envp) == 1)
+				return (free(pipefd), free_commands(cmds), 1);
 		}
 		else
 			cmds[i].pid = NO_FORK;
@@ -156,8 +164,6 @@ int	start_piping(t_command *cmds, char *envp[])
 	close_parent(pipefd, i);
 	status = wait_for_all(cmds, i, access_status);
 	free(pipefd);
-	if (status == -1)
-		return (perror("Wait error"), 1);
 	return (status);
 }
 
