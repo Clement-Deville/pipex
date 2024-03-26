@@ -1,0 +1,23 @@
+FLAGS = -Wall -Wextra -Werror
+SRCS_FILES =	main	\
+				parse	\
+				commands	\
+				start_piping	\
+SRCS_FILES_BONUS =	main_bonus	\
+					commands	\
+					parse	\
+					start_piping	\
+MANDATORY_DIR =	mandatory/
+SOURCES =	$(addprefix $(SOURCE_DIR), $(addsuffix .c, $(SRCS_FILES)))
+INCLUDES =	$(addprefix $(INCLUDES_DIR), $(addsuffix .h, $(INCLUDES_FILES)))
+OBJS =		$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES)))
+OBJS_B =	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES_BONUS)))
+.PHONY: all clean fclean re bonus
+all: $(NAME) $(NAME_B)
+	make -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
+clean:
+	make clean -C $(LIBFT_DIR)
+fclean: clean
+	make fclean -C $(LIBFT_DIR)
+re: fclean all

@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 14:40:12 by cdeville          #+#    #+#             */
-/*   Updated: 2024/02/27 18:17:47 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/26 12:03:20 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,6 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	if (src < dest)
 		return (ft_rev_memcpy(dest, src, n));
 	return (dest);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
 }
 
 char	*ft_strjoin_edited(char *line, char const *buff)

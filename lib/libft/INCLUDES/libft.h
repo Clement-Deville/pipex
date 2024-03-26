@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:55:59 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/05 12:34:14 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/26 12:01:43 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,9 +158,6 @@ t_hash			*create_htab(int size, char *tab[],
 # endif
 
 char			*get_next_line(int fd);
-size_t			ft_strlen(const char *s);
-void			*ft_memmove(void *dest, const void *src, size_t n);
-void			*ft_memcpy(void *dest, const void *src, size_t n);
 char			*ft_strjoin_edited(char *s1, char const *s2);
 char			*fill_line(int fd, char *line, char **stock);
 t_bool			isline_over(char *str);

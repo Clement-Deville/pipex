@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:18:33 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/25 18:33:41 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:35:55 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ int	close_parent(int *pipefd, int size)
 	while (i < size)
 	{
 		if (do_close((pipefd + (2 * i))[READ]) == -1)
-			return (1);
+			return (free(pipefd), 1);
 		if (do_close((pipefd + (2 * i))[WRITE]) == -1)
-			return (1);
+			return (free(pipefd), 1);
 		i++;
 	}
+	free(pipefd);
 	return (0);
 }

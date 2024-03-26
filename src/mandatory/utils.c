@@ -1,23 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unlink_cmd.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/07 10:21:52 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/07 10:28:22 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/11 10:36:02 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/26 19:09:43 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-int	do_unlink(const char *pathname)
+t_bool	are_in_child(int pid1)
 {
-	if (unlink(pathname) == -1)
+	if (pid1 == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+t_bool	are_in_child_two(int pid1, int pid2)
+{
+	if (pid1 > 0 && pid2 == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+t_bool	is_cmd_executable(t_command cmds)
+{
+	if (cmds.status == 0 && cmds.pid != NO_FORK)
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+int	nbr_of_cmds(t_command *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (cmds[i].args)
 	{
-		perror("Erreur lors de la suppression du fichier");
-		return (1);
+		i++;
 	}
-	return (0);
+	return (i);
 }

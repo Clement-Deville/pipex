@@ -1,6 +1,6 @@
-NAME = pipex
+NAME = $(BIN_DIR)pipex
 
-NAME_B = pipex_bonus
+NAME_B = $(BIN_DIR)pipex_bonus
 
 CC = cc
 
@@ -9,78 +9,69 @@ FLAGS = -Wall -Wextra -Werror
 DEBUG = -g
 
 SRCS_FILES =	main	\
-				check_command_access	\
-				exec_cmd	\
 				parse	\
-				do_unlink	\
-				do_pipe		\
-				do_dup2	\
-				do_close	\
+				commands	\
+				do	\
 				utils	\
 				redirection	\
 				start_piping	\
-				wait_for_all	\
 				fd_utils	\
-				get_next_line	\
-				get_next_line_utils	\
-
 
 SRCS_FILES_BONUS =	main_bonus	\
-					print_commands	\
-					parse_commands	\
-					free_commands	\
-					check_command_access	\
-					exec_cmd	\
-					parse	\
-					do_unlink	\
-					do_pipe		\
-					do_dup2	\
-					do_close	\
-					utils	\
-					redirection	\
-					start_piping	\
-					wait_for_all	\
-					fd_utils	\
-					get_next_line	\
-					get_next_line_utils	\
+					commands_bonus	\
+					parse_bonus	\
+					here_doc_bonus	\
+					do_bonus	\
+					utils_bonus	\
+					redirection_bonus	\
+					start_piping_bonus	\
+					fd_utils_bonus	\
 
 
 INCLUDES_FILES = pipex
 
-SOURCE_DIR =	./src/
+SOURCE_DIR =	./src/mandatory/
+SOURCE_BONUS_DIR = ./src/bonus/
 INCLUDES_DIR =	./include/
 OBJS_DIR =		./obj/
-BIN_DIR = 		./bin/
+OBJS_BONUS_DIR = ./obj/
+BIN_DIR =		./bin/
 LIB_DIR =		./lib/
-TEST_DIR = 		./test/
-MANDATORY_DIR = mandatory/
+TEST_DIR =		./test/
+MANDATORY_DIR =	mandatory/
 
 LIBFT_DIR = $(LIB_DIR)/libft
 
 SOURCES =	$(addprefix $(SOURCE_DIR), $(addsuffix .c, $(SRCS_FILES)))
 INCLUDES =	$(addprefix $(INCLUDES_DIR), $(addsuffix .h, $(INCLUDES_FILES)))
 OBJS =		$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES)))
-OBJS_B = 	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES_BONUS)))
+OBJS_B =	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES_BONUS)))
 
-$(NAME): $(OBJS)
-	make -C $(LIBFT_DIR)
-	mkdir -p $(BIN_DIR)
-	$(CC) $(FLAGS) $(OBJS) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME)
-	@echo "pipex Done !"
+.PHONY: all clean fclean re bonus norminette
 
-$(NAME_B): $(OBJS_B)
-	make -C $(LIBFT_DIR)
-	mkdir -p $(BIN_DIR)
-	$(CC) $(FLAGS) $(OBJS_B) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(BIN_DIR)$(NAME_B)
-	@echo "pipex_bonus Done !"
+all: $(NAME) $(NAME_B)
+
+bonus: $(NAME_B)
 
 $(OBJS_DIR)%.o : $(SOURCE_DIR)%.c
+	@mkdir -p $(BIN_DIR)
 	@mkdir -p $(OBJS_DIR)
 	$(CC) $(FLAGS) $(DEBUG) -I./lib/libft/INCLUDES -I$(INCLUDES_DIR) -c $< -o $@
 
-all: $(NAME)
+$(OBJS_BONUS_DIR)%.o : $(SOURCE_BONUS_DIR)%.c
+	@mkdir -p $(BIN_DIR)
+	@mkdir -p $(OBJS_DIR)
+	$(CC) $(FLAGS) $(DEBUG) -I./lib/libft/INCLUDES -I$(INCLUDES_DIR) -c $< -o $@
 
-bonus: $(NAME_B)
+$(NAME): $(OBJS)
+	make -C $(LIBFT_DIR)
+	$(CC) $(FLAGS) $(OBJS) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(NAME)
+	@echo "\nMandatory part compiled !\n"
+
+$(NAME_B): $(OBJS_B)
+	make -C $(LIBFT_DIR)
+	$(CC) $(FLAGS) $(OBJS_B) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(NAME_B)
+	@echo "\nBonus Compiled !\n"
 
 clean:
 	rm -rf $(OBJS_DIR)
@@ -92,4 +83,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+norminette:
+			norminette ./src
+			norminette ./include

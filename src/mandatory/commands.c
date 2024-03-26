@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_access.c                                     :+:      :+:    :+:   */
+/*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:46:41 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/21 14:04:28 by cdeville         ###   ########.fr       */
+/*   Created: 2024/03/26 11:41:24 by cdeville          #+#    #+#             */
+/*   Updated: 2024/03/26 11:42:14 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,27 @@ int	check_command_access(const char *path)
 		return (DONOT_EXIST);
 	else
 		return (128);
+}
+
+int	exec_cmd(const char *path, char *const args[], char *const envp[])
+{
+	if (execve(path, args, envp) == -1)
+	{
+		perror("Probleme a l'execution de la commande");
+		return (1);
+	}
+	return (0);
+}
+
+void	free_commands(t_command *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (cmds[i].args)
+	{
+		ft_free("%s", cmds[i].args);
+		i++;
+	}
+	free(cmds);
 }

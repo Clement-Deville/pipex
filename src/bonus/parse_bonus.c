@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:01:32 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/25 18:41:05 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:28:41 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_command	*parse(int argc, char **argv)
 	return (cmds);
 }
 
-void	do_here_doc(int argc, char *argv[], t_command **cmds)
+void	parse_here_doc(int argc, char *argv[], t_command **cmds)
 {
 	if (set_input_here_doc(argv[2]) == -1)
 		exit (1);
@@ -62,20 +62,20 @@ void	do_here_doc(int argc, char *argv[], t_command **cmds)
 	if (*cmds == NULL)
 		exit (1);
 	if (set_output_append(argv[argc - 1],
-			cmds[nbr_of_cmds(*cmds) - 1]) == -1)
+			&(*cmds)[nbr_of_cmds(*cmds) - 1]) == -1)
 	{
 		free_commands(*cmds);
 		exit (1);
 	}
 }
 
-void	do_standard(int argc, char *argv[], t_command **cmds)
+void	parse_standard(int argc, char *argv[], t_command **cmds)
 {
 	*cmds = parse(argc - 3, &argv[2]);
 	if (*cmds == NULL)
 		exit (1);
 	if (set_input(argv[1], *cmds) == -1
-		|| set_output(argv[argc - 1], cmds[nbr_of_cmds(*cmds) - 1]) == -1)
+		|| set_output(argv[argc - 1], &(*cmds)[nbr_of_cmds(*cmds) - 1]) == -1)
 	{
 		free_commands(*cmds);
 		exit (1);
