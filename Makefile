@@ -49,7 +49,7 @@ OBJS_B =	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES_BONUS)))
 
 .PHONY: all clean fclean re bonus norminette
 
-all: $(NAME) $(NAME_B)
+all: $(NAME)
 
 bonus: $(NAME_B)
 
@@ -64,25 +64,33 @@ $(OBJS_BONUS_DIR)%.o : $(SOURCE_BONUS_DIR)%.c
 	$(CC) $(FLAGS) $(DEBUG) -I./lib/libft/INCLUDES -I$(INCLUDES_DIR) -c $< -o $@
 
 $(NAME): $(OBJS)
+	@echo "\e[0;32m\nGenerating libft...\n\e[0m"
 	make -C $(LIBFT_DIR)
+	@echo "\e[0;32m\nLinking executable:\n\e[0m"
 	$(CC) $(FLAGS) $(OBJS) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(NAME)
-	@echo "\nMandatory part compiled !\n"
+	@echo "\e[0;32m\nMandatory part compiled !\n\e[0m"
 
 $(NAME_B): $(OBJS_B)
+	@echo "\e[0;32m\nGenerating libft...\n\e[0m"
 	make -C $(LIBFT_DIR)
+	@echo "\e[0;32m\nLinking executable:\n\e[0m"
 	$(CC) $(FLAGS) $(OBJS_B) $(DEBUG) -lft -L$(LIBFT_DIR) -o $(NAME_B)
-	@echo "\nBonus Compiled !\n"
+	@echo "\e[0;32m\nBonus Compiled !\e[0m"
 
 clean:
+	@echo "\e[0;31m\nDeleting objects\n\e[0m"
 	rm -rf $(OBJS_DIR)
 	make clean -C $(LIBFT_DIR)
 
 fclean: clean
+	@echo "\e[0;31m\nDeleting executable\n\e[0m"
 	rm -rf $(BIN_DIR)
 	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
 norminette:
+			@echo "\e[0;32m\nChecking .c norme:\n\e[0m"
 			norminette ./src
+			@echo "\e[0;32m\nChecking .h norme:\n\e[0m"
 			norminette ./include
