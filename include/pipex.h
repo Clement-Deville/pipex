@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:09:42 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/26 19:12:20 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:32:50 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ typedef struct s_command
 
 // commands.c
 
-int			check_command_access(const char *path);
-int			exec_cmd(const char *path, char *const args[], char *const envp[]);
-void		free_commands(t_command *cmds);
+int				check_for_path_access(char **cmd, char **envp);
+char			*get_path(char *envp[]);
+int				check_command_access(const char *path);
+int				exec_cmd(const char *path, char *const args[], char *envp[]);
+void			free_commands(t_command *cmds);
 
 // do.c
 

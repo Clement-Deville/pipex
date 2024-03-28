@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   commands_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:41:24 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/26 11:42:14 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:30:13 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_command_access(const char *path)
 		return (128);
 }
 
-int	exec_cmd(const char *path, char *const args[], char *const envp[])
+int	exec_cmd(const char *path, char *const args[], char *envp[])
 {
 	if (execve(path, args, envp) == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 18:03:24 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/26 11:54:50 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:32:39 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char *argv[], char *envp[])
 	int			status;
 
 	if (argc < 5)
-		return (0);
+		return (ft_putstr_fd("Error, you need at least 4 arguments.\n", 2), 0);
 	if (ft_strncmp("here_doc", argv[1], 10) == 0)
 		parse_here_doc(argc, argv, &cmds);
 	else
