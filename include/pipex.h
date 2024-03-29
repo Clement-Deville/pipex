@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:09:42 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/28 17:32:50 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 11:45:48 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char			*get_path(char *envp[]);
 int				check_command_access(const char *path);
 int				exec_cmd(const char *path, char *const args[], char *envp[]);
 void			free_commands(t_command *cmds);
+char			**parse_path(char *envp[]);
 
 // do.c
 
@@ -79,7 +80,7 @@ int			set_output_append(char *filename, t_command *last_command);
 
 // start_piping.c
 
-int			start_piping(t_command *cmds, char *envp[]);
+int			start_piping(t_command *cmds, char *envp[], char **paths);
 
 // utils.c
 

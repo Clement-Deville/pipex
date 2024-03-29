@@ -1,0 +1,30 @@
+FLAGS = -Wall -Wextra -Werror
+SRCS_FILES =	main	\
+				parse	\
+				commands	\
+				start_piping	\
+SRCS_FILES_BONUS =	main_bonus	\
+					commands_bonus	\
+					parse_bonus	\
+					start_piping_bonus	\
+SOURCE_DIR =	./src/mandatory/
+MANDATORY_DIR =	mandatory/
+SOURCES =	$(addprefix $(SOURCE_DIR), $(addsuffix .c, $(SRCS_FILES)))
+INCLUDES =	$(addprefix $(INCLUDES_DIR), $(addsuffix .h, $(INCLUDES_FILES)))
+OBJS =		$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES)))
+OBJS_B =	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES_BONUS)))
+.PHONY: all clean fclean re bonus norminette
+all: $(NAME)
+	@echo "\e[0;32m\nGenerating libft...\n\e[0m"
+	make -C $(LIBFT_DIR)
+	@echo "\e[0;32m\nLinking executable:\n\e[0m"
+	@echo "\e[0;32m\nMandatory part compiled !\n\e[0m"
+	@echo "\e[0;32m\nGenerating libft...\n\e[0m"
+	make -C $(LIBFT_DIR)
+	@echo "\e[0;32m\nLinking executable:\n\e[0m"
+clean:
+	make clean -C $(LIBFT_DIR)
+fclean: clean
+	@echo "\e[0;31m\nDeleting executable\n\e[0m"
+	make fclean -C $(LIBFT_DIR)
+re: fclean all
