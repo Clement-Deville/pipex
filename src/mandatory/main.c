@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:26:33 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/29 11:45:26 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:38:09 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ int	main(int argc, char *argv[], char *envp[])
 	paths = parse_path(envp);
 	status = start_piping(cmds, envp, paths);
 	free_commands(cmds);
+	ft_free("%s", paths);
 	return (status);
 }

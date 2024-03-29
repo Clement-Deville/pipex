@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:24:06 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/29 11:44:05 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:27:10 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ int	start_piping(t_command *cmds, char *envp[], char **paths)
 	{
 		if (cmds[i + 1].args != NULL && pipe(&pipefd[2 * i]) == -1)
 			return (free(pipefd), perror("Pipe error"), 1);
-		// if (cmds[i].status == 0)
-		// 	cmds[i].status = check_command_access(cmds[i].args[0]);
 		if (cmds[i].status == 0)
 			cmds[i].status = check_for_path_access(&(cmds[i].args[0]), paths);
+		if (cmds[i].status == -1)
+			return (free(pipefd), 1);
 		if (is_cmd_executable(cmds[i]))
 		{
 			if (do_fork(cmds, i, pipefd, envp) == 1)

@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:41:24 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/29 13:49:35 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:59:40 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,32 +94,42 @@ char	**add_cmd_to_path(char **split_path, const char *cmd)
 	return (complete_path);
 }
 
+void	print_not_found(char *cmd)
+{
+	ft_putstr_fd("command not found: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("\n", 2);
+}
+
+int	change_path(char **cmd, char *new_path)
+{
+	char	*temp;
+
+	temp = *cmd;
+	*cmd = ft_strdup(new_path);
+	if (*cmd == NULL)
+	{
+		*cmd = temp;
+		return (perror("Malloc error"), -1);
+	}
+	return (free(temp), 0);
+}
+
 int	check_for_all(char **paths, char **cmd)
 {
 	int		i;
 	int		access_status;
 	char	*access_denied_path;
-	char	**split_path;
 
 	i = 0;
-	split_path = add_cmd_to_path(paths, *cmd);
 	access_denied_path = NULL;
-	while (split_path[i])
+	while (paths[i])
 	{
-		fprintf(stderr, "%s\n", split_path[i]);
-		access_status = check_command_access(split_path[i]);
+		access_status = check_command_access(paths[i]);
 		if (access_status == 0)
-		{
-			free(*cmd);
-			*cmd = ft_strdup(split_path[i]);
-			fprintf(stderr, "Acces found: %s\n", *cmd);
-			if (*cmd == NULL)
-				return (perror("Malloc error"), -1);
-			//need to protect that malloc
-			return (0);
-		}
+			return (change_path(cmd, paths[i]));
 		if (access_status == CANT_EXEC)
-			access_denied_path = split_path[i];
+			access_denied_path = paths[i];
 		i++;
 	}
 	if (access_denied_path)
@@ -127,8 +137,9 @@ int	check_for_all(char **paths, char **cmd)
 		access_status = check_command_access(access_denied_path);
 		return (perror(access_denied_path), access_status);
 	}
-	else
-		return (access_status);
+	if (access_status != 0)
+		print_not_found(*cmd);
+	return (access_status);
 }
 
 t_bool	is_path(char *path)
@@ -141,10 +152,21 @@ t_bool	is_path(char *path)
 
 int	check_for_path_access(char **cmd, char **paths)
 {
+	char	**complete_paths;
+	int		access_status;
+
 	if (is_path(*cmd) == TRUE)
 		return (check_command_access(*cmd));
 	else
-		return (check_for_all(paths, cmd));
+	{
+		complete_paths = add_cmd_to_path(paths, *cmd);
+		if (complete_paths == NULL)
+			return (-1);
+		access_status = check_for_all(complete_paths, cmd);
+		ft_free("%s", complete_paths);
+		return (access_status);
+	}
+
 }
 
 char	**parse_path(char *envp[])
