@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:24:06 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/29 14:27:10 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:56:19 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int	start_piping(t_command *cmds, char *envp[], char **paths)
 	int	i;
 	int	*pipefd;
 
-	i = 0;
+	i = -1;
 	if (allocate(&pipefd, nbr_of_cmds(cmds)) != 0)
 		return (1);
-	while (cmds[i].args)
+	while (cmds[++i].args)
 	{
 		if (cmds[i + 1].args != NULL && pipe(&pipefd[2 * i]) == -1)
 			return (free(pipefd), perror("Pipe error"), 1);
@@ -66,7 +66,6 @@ int	start_piping(t_command *cmds, char *envp[], char **paths)
 		}
 		else
 			cmds[i].pid = NO_FORK;
-		i++;
 	}
 	if (close_parent(pipefd, --i) == 1)
 		return (1);

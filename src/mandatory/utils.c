@@ -6,22 +6,35 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 10:36:02 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/26 19:09:43 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:12:05 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-t_bool	are_in_child(int pid1)
+int	len(char **split)
 {
-	if (pid1 == 0)
-		return (TRUE);
+	int	i;
+
+	i = 0;
+	if (split == NULL)
+		return (0);
+	while (split[i])
+		i++;
+	return (i);
+}
+
+t_bool	is_path(char *path)
+{
+	if (path != NULL)
+		if (path[0] == '.' || path[0] == '/')
+			return (TRUE);
 	return (FALSE);
 }
 
-t_bool	are_in_child_two(int pid1, int pid2)
+t_bool	are_in_child(int pid1)
 {
-	if (pid1 > 0 && pid2 == 0)
+	if (pid1 == 0)
 		return (TRUE);
 	return (FALSE);
 }

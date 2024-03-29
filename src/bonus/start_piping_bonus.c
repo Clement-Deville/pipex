@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:24:06 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/28 17:11:15 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 18:11:54 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,22 @@ int	wait_for_all(t_command *cmds, int size)
 	return (exit_value);
 }
 
-int	start_piping(t_command *cmds, char *envp[])
+int	start_piping(t_command *cmds, char *envp[], char **paths)
 {
 	int	i;
 	int	*pipefd;
 
-	i = 0;
+	i = -1;
 	if (allocate(&pipefd, nbr_of_cmds(cmds)) != 0)
 		return (1);
-	while (cmds[i].args)
+	while (cmds[++i].args)
 	{
 		if (cmds[i + 1].args != NULL && pipe(&pipefd[2 * i]) == -1)
 			return (free(pipefd), perror("Pipe error"), 1);
 		if (cmds[i].status == 0)
-			cmds[i].status = check_command_access(cmds[i].args[0]);
+			cmds[i].status = check_for_path_access(&(cmds[i].args[0]), paths);
+		if (cmds[i].status == -1)
+			return (free(pipefd), 1);
 		if (is_cmd_executable(cmds[i]))
 		{
 			if (do_fork(cmds, i, pipefd, envp) == 1)
@@ -64,7 +66,6 @@ int	start_piping(t_command *cmds, char *envp[])
 		}
 		else
 			cmds[i].pid = NO_FORK;
-		i++;
 	}
 	if (close_parent(pipefd, --i) == 1)
 		return (1);

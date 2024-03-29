@@ -6,24 +6,17 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:41:24 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/28 17:30:13 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/03/29 18:13:26 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-int	check_command_access(const char *path)
+void	print_not_found(char *cmd)
 {
-	if (access(path, R_OK) == 0)
-		if (access(path, X_OK) == 0)
-			return (0);
-	perror(path);
-	if (errno == EACCES)
-		return (CANT_EXEC);
-	if (errno == ENOENT)
-		return (DONOT_EXIST);
-	else
-		return (128);
+	ft_putstr_fd("command not found: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 int	exec_cmd(const char *path, char *const args[], char *envp[])

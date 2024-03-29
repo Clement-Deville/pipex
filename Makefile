@@ -16,6 +16,8 @@ SRCS_FILES =	main	\
 				redirection	\
 				start_piping	\
 				fd_utils	\
+				path	\
+				access	\
 
 SRCS_FILES_BONUS =	main_bonus	\
 					commands_bonus	\
@@ -26,6 +28,8 @@ SRCS_FILES_BONUS =	main_bonus	\
 					redirection_bonus	\
 					start_piping_bonus	\
 					fd_utils_bonus	\
+					path_bonus		\
+					access_bonus	\
 
 
 INCLUDES_FILES = pipex
