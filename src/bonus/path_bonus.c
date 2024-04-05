@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   path_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 17:09:33 by cdeville          #+#    #+#             */
-/*   Updated: 2024/03/29 18:00:34 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:22:22 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,14 @@ char	**parse_path(char *envp[])
 	const char	*path;
 
 	path = get_path(envp);
-	cut = ft_strchr(path, '/');
+	if (path == NULL)
+	{
+		cut = ft_strdup("");
+		if (cut == NULL)
+			return (perror("Malloc error"), NULL);
+	}
+	else
+		cut = ft_strchr(path, '/');
 	split_path = ft_split(cut, ':');
 	if (split_path == NULL)
 		return (perror("Malloc error"), NULL);
