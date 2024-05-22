@@ -6,7 +6,7 @@
 /*   By: cdeville <cdeville@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 17:09:33 by cdeville          #+#    #+#             */
-/*   Updated: 2024/04/05 18:22:22 by cdeville         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:48:20 by cdeville         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,19 @@ char	**parse_path(char *envp[])
 		cut = ft_strdup("");
 		if (cut == NULL)
 			return (perror("Malloc error"), NULL);
+		split_path = (char **)malloc(sizeof(char *) * 2);
+		if (split_path == NULL)
+			return (free(cut), perror("Malloc error"), NULL);
+		split_path[0] = cut;
+		split_path[1] = NULL;
+		return (add_dir(split_path));
 	}
 	else
+	{
 		cut = ft_strchr(path, '/');
-	split_path = ft_split(cut, ':');
-	if (split_path == NULL)
-		return (perror("Malloc error"), NULL);
-	split_path = add_dir(split_path);
-	return (split_path);
+		split_path = ft_split(cut, ':');
+		if (split_path == NULL)
+			return (perror("Malloc error"), NULL);
+		return (add_dir(split_path));
+	}
 }
